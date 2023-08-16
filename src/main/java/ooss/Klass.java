@@ -20,13 +20,13 @@ public class Klass {
     public void assignLeader(Student student) {
         if (student.isIn(this)) {
             leader = student;
-            for (Person person : attachedPersons) {
-                if (person instanceof Teacher) {
-                    System.out.println("I am " + person.getName() + ", teacher of Class " + number + ". I know " + student.getName() + " become Leader.");
-                } else if (person instanceof Student && person != student) {
-                    System.out.println("I am " + person.getName() + ", student of Class " + number + ". I know " + student.getName() + " become Leader.");
-                }
-            }
+            attachedPersons.stream()
+                    .filter(person -> person != student)
+                    .forEach(person -> {
+                        String role = person instanceof Teacher ? "teacher" : "student";
+                        System.out.println("I am " + person.getName() + ", " + role + " of Class " + number
+                                + ". I know " + student.getName() + " become Leader.");
+                    });
         } else {
             System.out.println("It is not one of us.");
         }

@@ -17,13 +17,11 @@ public class Student extends Person {
 
     @Override
     public String introduce() {
-        if (klass != null) {
-            if(klass.isLeader(this)){
-                return super.introduce() + " I am a student. I am the leader of class " + klass.getNumber() + ".";
-            } else{
-                return super.introduce() + " I am a student. I am in class " + klass.getNumber() + ".";
-            }
-        }
-        return super.introduce() + " I am a student.";
+        String introduction = super.introduce() + " I am a student.";
+
+        return klass != null ? klass.isLeader(this)
+                ? introduction + " I am the leader of class " + klass.getNumber() + "."
+                : introduction + " I am in class " + klass.getNumber() + "."
+                : introduction;
     }
 }

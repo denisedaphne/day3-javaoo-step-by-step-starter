@@ -1,7 +1,6 @@
 package ooss;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,7 +11,7 @@ public class Teacher extends Person {
     }
 
     public void assignTo(Klass klass) {
-        if (!taughtClasses.contains(klass)) {
+        if (!belongsTo(klass)) {
             taughtClasses.add(klass);
         }
     }
@@ -22,25 +21,22 @@ public class Teacher extends Person {
     }
 
     public boolean isTeaching(Student student) {
-        for (Klass klass : taughtClasses) {
-            if (student.isIn(klass)) {
-                return true;
-            }
-        }
-        return false;
+        return taughtClasses.stream()
+                .anyMatch(student::isIn);
     }
 
     @Override
     public String introduce() {
+        String introduction = super.introduce() + " I am a teacher.";
         if (!taughtClasses.isEmpty()) {
             String classNumbers = taughtClasses.stream()
                     .map(Klass::getNumber)
                     .map(String::valueOf)
                     .collect(Collectors.joining(", "));
 
-            return super.introduce() + " I am a teacher. I teach Class " + classNumbers + ".";
+            return introduction + " I teach Class " + classNumbers + ".";
         } else{
-            return super.introduce() + " I am a teacher.";
+            return introduction;
         }
     }
 }
